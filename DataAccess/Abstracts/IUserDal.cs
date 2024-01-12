@@ -11,5 +11,7 @@ namespace DataAccess.Abstracts
     {
         public User CreateUser(User user);
         public ICollection<User> GetAllUsers();
+        public User GetUserByEmail(string email);
+
     }
 }

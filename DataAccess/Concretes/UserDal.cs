@@ -34,5 +34,13 @@ namespace DataAccess.Concretes
             
         }
 
+        public User GetUserByEmail(string email)
+        {
+            using (DataContext dbContext = new DataContext())
+            {
+                User user = dbContext.Users.Where(u => u.Email.Equals(email)).FirstOrDefault();
+                return user;
+            }
+        }
     }
 }

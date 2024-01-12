@@ -1,10 +1,12 @@
 ﻿using Business.Abstracts;
 using Entities.Concretes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("user")]
     public class UserController : ControllerBase
@@ -23,7 +25,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(User user)
+        public IActionResult CreateUser([FromBody] User user)
         {
             User createdUser = _userManager.CreateUser(user);
             return StatusCode(201, createdUser);
