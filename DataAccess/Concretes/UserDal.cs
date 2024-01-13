@@ -11,36 +11,38 @@ namespace DataAccess.Concretes
 {
     public class UserDal : IUserDal
     {
-
+        private readonly DataContext _dbContext;
+        public UserDal(DataContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public User CreateUser(User user)
         {
-
-            using (DataContext dbContext = new DataContext())
+            Role role = _dbContext.Roles.Where(r => r.Name == "ADMIN").FirstOrDefault();
+            UserRole usersRoles = new UserRole
             {
-                dbContext.Users.Add(user);
-                dbContext.SaveChanges();
-                return dbContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
-            }
+                User = user,
+                Role = role
+            };
 
+            _dbContext.Users.Add(user);
+            _dbContext.Add(usersRoles);
+            _dbContext.SaveChanges();
+            return _dbContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
         }
 
         public ICollection<User> GetAllUsers()
         {
-            using (DataContext dbContext = new DataContext())
-            {
-                ICollection<User> users = dbContext.Users.ToList();
-                return users;
-            }
-            
+            ICollection<User> users = _dbContext.Users.Include(u => u.Roles).ToList();
+            return users;
+
         }
 
         public User GetUserByEmail(string email)
         {
-            using (DataContext dbContext = new DataContext())
-            {
-                User user = dbContext.Users.Where(u => u.Email.Equals(email)).FirstOrDefault();
-                return user;
-            }
+            User user = _dbContext.Users.Where(u => u.Email.Equals(email)).FirstOrDefault();
+            return user;
+
         }
     }
 }

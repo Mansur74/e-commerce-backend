@@ -10,11 +10,29 @@ namespace DataAccess
 {
     public class DataContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            base.OnConfiguring(optionsBuilder.UseSqlServer("Data Source=DESKTOP-OM5GIL6;Initial Catalog=eCommerceDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"));
+
         }
 
-        public DbSet<User> Users {  get; set; } 
+        public DbSet<User> Users {  get; set; }
+        public DbSet<Role> Roles { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserRole>()
+                .HasKey(ur => new { ur.UserId, ur.RoleId});
+
+            modelBuilder.Entity<UserRole>()
+                .HasOne(ur => ur.User)
+                .WithMany(u => u.Roles)
+                .HasForeignKey(ur => ur.UserId);
+
+            modelBuilder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(u => u.Users)
+                .HasForeignKey(ur => ur.RoleId);
+        }
     }
 }

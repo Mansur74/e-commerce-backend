@@ -1,11 +1,12 @@
-﻿using DataAccess.Abstracts;
+﻿using Core.Utilities.Results;
+using DataAccess.Abstracts;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    [Route("api/authorization")]
     [ApiController]
-    [Route("/api")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -14,17 +15,22 @@ namespace WebAPI.Controllers
             this._authService = authService;
         }
 
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public IActionResult Login([FromBody] AuthRequestDto body)
         {
-            JwtResponseDto result = _authService.Login(body);
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            DataResult<JwtResponseDto> result = _authService.Login(body);
             return Ok(result);
         }
 
-        [HttpPost("/accessToken")]
+        [HttpPost("accessToken")]
         public IActionResult GetAccessToken([FromBody] RefreshTokenDto body)
         {
-            AccessTokenDto result = _authService.GetAccessToken(body);
+            DataResult<AccessTokenDto> result = _authService.GetAccessToken(body);
             return Ok(result);
         }
     }

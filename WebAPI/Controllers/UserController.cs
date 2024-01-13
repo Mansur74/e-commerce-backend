@@ -1,33 +1,36 @@
 ﻿using Business.Abstracts;
+using Core.Utilities.Results;
 using Entities.Concretes;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    [Route("api/user")]
     [ApiController]
-    [Route("user")]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
-        private readonly IUserService _userManager;
-        public UserController(IUserService userManager)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
-            this._userManager = userManager;
+            this._userService = userService;
         }
 
+
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public IActionResult GetUsers()
         {
-            ICollection<User> users = _userManager.GetAllUsers();
+            DataResult<ICollection<UserDto>> users = _userService.GetAllUsers();
             return StatusCode(200, users);
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] User user)
+        public IActionResult CreateUser([FromBody] UserDto user)
         {
-            User createdUser = _userManager.CreateUser(user);
+            DataResult<User> createdUser = _userService.CreateUser(user);
             return StatusCode(201, createdUser);
         }
 

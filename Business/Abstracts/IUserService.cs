@@ -1,4 +1,6 @@
-﻿using Entities.Concretes;
+﻿using Core.Utilities.Results;
+using Entities.Concretes;
+using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace Business.Abstracts
 {
     public interface IUserService
     {
-        User CreateUser(User user);
-        ICollection<User> GetAllUsers();
+        DataResult<User> CreateUser(UserDto user);
+        DataResult<ICollection<UserDto>> GetAllUsers();
     }
 }

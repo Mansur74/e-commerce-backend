@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Results
+namespace Core.Utilities.Results
 {
     public class ErrorResult : Result
     {
         public ErrorResult() : base(true) { }
-        public ErrorResult(String message) : base(true, message) { }
+        public ErrorResult(string message) : base(true, message) { }
     }
 }

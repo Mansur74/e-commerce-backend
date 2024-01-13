@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using DataAccess.Abstracts;
-using Entities.Dtos;
+﻿using Business.Abstracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,13 +9,13 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Concretes
+namespace Business.Concretes
 {
-    public class TokenService : ITokenService
+    public class TokenManager : ITokenService
     {
         public readonly IConfiguration _configuration;
 
-        public TokenService(IConfiguration configuration)
+        public TokenManager(IConfiguration configuration)
         {
             this._configuration = configuration;
         }

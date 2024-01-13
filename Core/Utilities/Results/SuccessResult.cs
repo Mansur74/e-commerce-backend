@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Results
+namespace Core.Utilities.Results
 {
     public class SuccessResult : Result
     {
 
         public SuccessResult() : base(true) { }
-        public SuccessResult(String message) : base(true, message) { }
+        public SuccessResult(string message) : base(true, message) { }
 
     }
 }
