@@ -1,5 +1,7 @@
-﻿using Core.Utilities.Results;
+﻿using Business.Abstracts;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
+using Entities.Concretes;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +12,11 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly IUserService _userService;
+        public AuthController(IAuthService authService, IUserService userService)
         {
-            this._authService = authService;
+            _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -32,6 +36,13 @@ namespace WebAPI.Controllers
         {
             DataResult<AccessTokenDto> result = _authService.GetAccessToken(body);
             return Ok(result);
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] UserDto user)
+        {
+            DataResult<UserDto> createdUser = _userService.CreateUser(user);
+            return Ok(createdUser);
         }
     }
 }

@@ -33,14 +33,14 @@ namespace DataAccess.Concretes
 
         public ICollection<User> GetAllUsers()
         {
-            ICollection<User> users = _dbContext.Users.Include(u => u.Roles).ToList();
+            ICollection<User> users = _dbContext.Users.Include(u => u.Roles).ThenInclude(ur => ur.Role).ToList();
             return users;
 
         }
 
         public User GetUserByEmail(string email)
         {
-            User user = _dbContext.Users.Where(u => u.Email.Equals(email)).FirstOrDefault();
+            User user = _dbContext.Users.Where(u => u.Email.Equals(email)).Include(u => u.Roles).ThenInclude(ur => ur.Role).FirstOrDefault();
             return user;
 
         }

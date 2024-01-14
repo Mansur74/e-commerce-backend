@@ -27,11 +27,19 @@ namespace WebAPI.Controllers
             return StatusCode(200, users);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto user)
         {
-            DataResult<User> createdUser = _userService.CreateUser(user);
+            DataResult<UserDto> createdUser = _userService.CreateUser(user);
             return StatusCode(201, createdUser);
+        }
+
+        [HttpPost("zort")]
+        public IActionResult CreateUdser([FromBody] UserDto user)
+        {
+  
+            return StatusCode(201, user);
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Business.Abstracts;
+using Entities.Concretes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,37 +20,30 @@ namespace Business.Concretes
         {
             this._configuration = configuration;
         }
-        public string GenerateAccessToken(string email)
+        public string GenerateAccessToken(User user, List<Claim> claims)
         {
             SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:AccessToken:Secret"]));
-            _ = int.TryParse(_configuration["JWT:AccessToken:ValidityInMinutes"], out int tokenValidityInMinutes);
+            _ = int.TryParse(_configuration["JWT:AccessToken:ValidityInSeconds"], out int tokenValidityInSeconds);
 
             JwtSecurityToken jwt = new JwtSecurityToken(
                     issuer: _configuration["JWT:ValidIssuer"],
                     audience: _configuration["JWT:ValidAudience"],
-                    claims: new List<Claim> {
-                        new Claim("email", email)
-                    },
-                    notBefore: DateTime.UtcNow,
-                    expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddSeconds(tokenValidityInSeconds),
                     signingCredentials: new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256)
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
-        public string GenerateRefreshToken(string email)
+        public string GenerateRefreshToken(User user, List<Claim> claims)
         {
             SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:RefreshToken:Secret"]));
-            _ = int.TryParse(_configuration["JWT:RefreshToken:ValidityInMinutes"], out int tokenValidityInMinutes);
 
             JwtSecurityToken jwt = new JwtSecurityToken(
                     issuer: _configuration["JWT:ValidIssuer"],
                     audience: _configuration["JWT:ValidAudience"],
-                    claims: new List<Claim> {
-                        new Claim("email", email)
-                    },
-                    notBefore: DateTime.UtcNow,
+                    claims: claims,
                     signingCredentials: new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256)
                 );
 

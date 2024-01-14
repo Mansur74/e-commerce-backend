@@ -3,6 +3,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Entities.Dtos;
+using System.Security.Claims;
 
 namespace DataAccess.Concretes
 {
@@ -20,7 +21,16 @@ namespace DataAccess.Concretes
         public DataResult<AccessTokenDto> GetAccessToken(RefreshTokenDto refreshToken)
         {
             string email = this._tokenService.ValidateRefreshToken(refreshToken.RefreshToken);
-            string accessToken = _tokenService.GenerateAccessToken(email);
+            User user = _userDal.GetUserByEmail(email);
+            List<Claim> claims = new List<Claim> {
+                        new Claim("email", user.Email),
+                    };
+
+            foreach (var userRole in user.Roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
+            }
+            string accessToken = _tokenService.GenerateAccessToken(user, claims);
             return new SuccessDataResult<AccessTokenDto>(new AccessTokenDto { AccessToken = accessToken });
 
         }
@@ -30,8 +40,16 @@ namespace DataAccess.Concretes
             User user = _userDal.GetUserByEmail(request.Email);
             if (user != null && request.Email.Equals(user.Email))
             {
-                string accessToken = _tokenService.GenerateAccessToken(user.Email);
-                string refreshToken = _tokenService.GenerateRefreshToken(user.Email);
+                List<Claim> claims = new List<Claim> {
+                        new Claim("email", user.Email),
+                    };
+
+                foreach (var userRole in user.Roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
+                }
+                string accessToken = _tokenService.GenerateAccessToken(user, claims);
+                string refreshToken = _tokenService.GenerateRefreshToken(user, claims);
                 return new SuccessDataResult<JwtResponseDto>(new JwtResponseDto {AccessToken = accessToken, RefreshToken = refreshToken });
             }
             else
