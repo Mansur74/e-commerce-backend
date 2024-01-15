@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     [Route("api/user")]
     [ApiController]
     public class UserController : Controller
@@ -19,7 +20,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [Authorize(Roles = "ADMIN")]
+
         [HttpGet]
         public IActionResult GetUsers()
         {
@@ -27,19 +28,12 @@ namespace WebAPI.Controllers
             return StatusCode(200, users);
         }
 
-        [Authorize(Roles = "ADMIN")]
+       
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto user)
         {
             DataResult<UserDto> createdUser = _userService.CreateUser(user);
             return StatusCode(201, createdUser);
-        }
-
-        [HttpPost("zort")]
-        public IActionResult CreateUdser([FromBody] UserDto user)
-        {
-  
-            return StatusCode(201, user);
         }
 
     }

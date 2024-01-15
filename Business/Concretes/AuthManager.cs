@@ -14,8 +14,8 @@ namespace DataAccess.Concretes
 
         public AuthManager(IUserDal userDal, ITokenService tokenService)
         {
-            this._userDal = userDal;
-            this._tokenService = tokenService;
+            _userDal = userDal;
+            _tokenService = tokenService;
         }
 
         public DataResult<AccessTokenDto> GetAccessToken(RefreshTokenDto refreshToken)
