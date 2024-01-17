@@ -8,13 +8,13 @@ namespace Core.Utilities.Results
 {
     public class Result
     {
-        public string? Message { get; set; }
         public bool Success { get; set; }
+        public string? Message { get; set; }
 
         public Result(bool success)
         {
             Success = success;
-            Message = null;
+     
         }
         public Result(bool success, string message)
         {

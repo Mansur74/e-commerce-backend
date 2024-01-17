@@ -16,17 +16,23 @@ var builder = WebApplication.CreateBuilder(args);
 // repositories
 builder.Services.AddScoped<IUserDal, UserDal>();
 builder.Services.AddScoped<IRoleDal, RoleDal>();
+builder.Services.AddScoped<IShopDal, ShopDal>();
 
 //services
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IAuthService, AuthManager>();
 builder.Services.AddScoped<ITokenService, TokenManager>();
-
+builder.Services.AddScoped<IShopService, ShopManager> ();
+/*
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-
-builder.Services.AddControllers();
+*/
+builder.Services.AddControllers()
+.ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = true; // Model doðrulama filtresini devre dýþý býrakýr
+}); ;
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

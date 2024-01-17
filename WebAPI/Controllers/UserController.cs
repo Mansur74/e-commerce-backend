@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
     [Authorize(Roles = "ADMIN")]
     [Route("api/user")]
     [ApiController]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         public UserController(IUserService userService)

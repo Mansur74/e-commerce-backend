@@ -16,18 +16,21 @@ namespace DataAccess.Concretes
         {
             _dbContext = dbContext;
         }
-        public User CreateUser(User user)
+        public User? CreateUser(User user)
         {
-            Role role = _dbContext.Roles.Where(r => r.Name == "ADMIN").FirstOrDefault();
-            UserRole usersRoles = new UserRole
+            Role? role = _dbContext.Roles.Where(r => r.Name == "ADMIN").FirstOrDefault();
+            if(role != null)
             {
-                User = user,
-                Role = role
-            };
+                UserRole usersRoles = new UserRole
+                {
+                    User = user,
+                    Role = role
+                };
 
-            _dbContext.Users.Add(user);
-            _dbContext.Add(usersRoles);
-            _dbContext.SaveChanges();
+                _dbContext.Users.Add(user);
+                _dbContext.Add(usersRoles);
+                _dbContext.SaveChanges();
+            }
             return _dbContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
         }
 
@@ -38,11 +41,17 @@ namespace DataAccess.Concretes
 
         }
 
-        public User GetUserByEmail(string email)
+        public User? GetUserByEmail(string email)
         {
-            User user = _dbContext.Users.Where(u => u.Email.Equals(email)).Include(u => u.Roles).ThenInclude(ur => ur.Role).FirstOrDefault();
+            User? user = _dbContext.Users.Where(u => u.Email.Equals(email)).Include(u => u.Roles).ThenInclude(ur => ur.Role).FirstOrDefault();
             return user;
 
+        }
+
+        public User? GetUserById(int id)
+        {
+            User? user = _dbContext.Users.Where(u => u.Id == id).FirstOrDefault();
+            return user;
         }
     }
 }

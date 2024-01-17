@@ -9,9 +9,10 @@ namespace DataAccess.Abstracts
 {
     public interface IUserDal
     {
-        public User CreateUser(User user);
+        public User? CreateUser(User user);
         public ICollection<User> GetAllUsers();
-        public User GetUserByEmail(string email);
+        public User? GetUserById(int id);
+        public User? GetUserByEmail(string email);
 
     }
 }
