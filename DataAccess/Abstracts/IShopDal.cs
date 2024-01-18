@@ -1,4 +1,5 @@
-﻿using Entities.Concretes;
+﻿using Core.DataAccess;
+using Entities.Concretes;
 using Entities.Dtos;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstracts
 {
-    public interface IShopDal
+    public interface IShopDal : IRepository<Shop>
     {
-        public Shop? CreateShop(Shop shop);
-        public Shop? UpdateShop(Shop shop, int shopId);
-        public ICollection<Shop> GelAllShops();
-        public Shop? GetShopById(int shopId);
+
     }
 }

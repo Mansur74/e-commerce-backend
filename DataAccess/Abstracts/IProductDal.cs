@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstracts
 {
-    public interface IRoleDal : IRepository<Role>
+    public interface IProductDal : IRepository<Product>
     {
-        public Role GetRoleByName(string name);
+
     }
 }

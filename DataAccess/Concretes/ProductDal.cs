@@ -1,7 +1,6 @@
 ﻿using Core.DataAccess;
 using DataAccess.Abstracts;
 using Entities.Concretes;
-using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +9,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concretes
 {
-    public class ShopDal : Repository<Shop>, IShopDal
+    public class ProductDal : Repository<Product>, IProductDal
     {
-        private readonly DataContext _dataContext;
-        public ShopDal(DataContext dataContext) : base(dataContext) 
+        public ProductDal(DataContext dataContext) : base(dataContext)
         {
-            _dataContext = dataContext;
         }
-
     }
 }

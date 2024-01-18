@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.DataAccess;
 using Entities.Concretes;
 
 namespace DataAccess.Abstracts
 {
-    public interface IUserDal
+    public interface IUserDal : IRepository<User>
     {
-        public User? CreateUser(User user);
-        public ICollection<User> GetAllUsers();
-        public User? GetUserById(int id);
+        public void CreateUserRole(UserRole userRole);
         public User? GetUserByEmail(string email);
+        public ICollection<User> GetAllIncludes();
 
     }
 }

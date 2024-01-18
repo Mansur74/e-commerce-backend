@@ -5,9 +5,9 @@ using DataAccess.Concretes;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Core.DataAccess;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,11 +23,11 @@ builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IAuthService, AuthManager>();
 builder.Services.AddScoped<ITokenService, TokenManager>();
 builder.Services.AddScoped<IShopService, ShopManager> ();
-/*
+
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-*/
+
 builder.Services.AddControllers()
 .ConfigureApiBehaviorOptions(options =>
 {

@@ -16,6 +16,7 @@ namespace Core.Utilities.Mappers
         public MappingProfile() 
         {
             CreateMap<User, UserDto>().ForMember(u => u.Roles, opt => opt.MapFrom(u => u.Roles.Select(ur => ur.Role)));
+            //CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
             CreateMap<ShopDto, Shop>();
             CreateMap<Shop, ShopDto>();

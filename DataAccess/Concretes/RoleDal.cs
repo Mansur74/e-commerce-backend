@@ -1,4 +1,5 @@
-﻿using DataAccess.Abstracts;
+﻿using Core.DataAccess;
+using DataAccess.Abstracts;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concretes
 {
-    public class RoleDal : IRoleDal
+    public class RoleDal :Repository<Role>, IRoleDal
     {
  
         private readonly DataContext _dbContext;
-        public RoleDal(DataContext dbContext) 
+        public RoleDal(DataContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }    
@@ -21,7 +22,6 @@ namespace DataAccess.Concretes
         {
             Role role = _dbContext.Roles.Where(r => r.Name == name).FirstOrDefault();
             return role;
-
         }
     }
 }

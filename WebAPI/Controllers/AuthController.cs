@@ -41,8 +41,8 @@ namespace WebAPI.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserDto user)
         {
-            DataResult<UserDto> createdUser = _userService.CreateUser(user);
-            return Ok(createdUser);
+            Result result = _userService.Create(user);
+            return Ok(result);
         }
     }
 }

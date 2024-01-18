@@ -11,7 +11,7 @@ namespace Business.Abstracts
 {
     public interface IUserService
     {
-        DataResult<UserDto> CreateUser(UserDto user);
-        DataResult<ICollection<UserDto>> GetAllUsers();
+        Result Create(UserDto user);
+        DataResult<ICollection<UserDto>> GetAll();
     }
 }

@@ -20,16 +20,19 @@ namespace Business.Concretes
             _roleDal = roleDal;
         }
 
-        public DataResult<UserDto> CreateUser(UserDto userDto)
+        public Result Create(UserDto userDto)
         {
-            User createdUser = _userDal.CreateUser(_mapper.Map<User>(userDto));
-            UserDto result = _mapper.Map<UserDto>(createdUser);
-            return new SuccessDataResult<UserDto>(result);
+            Role? role = _roleDal.GetRoleByName("ADMIN");
+            User user = _mapper.Map<User>(userDto);
+            UserRole userRole = new UserRole { User = user, Role = role };
+            _userDal.Create(user);
+            _userDal.CreateUserRole(userRole);
+            return new SuccessResult("User was created successfully");
         }
 
-        public DataResult<ICollection<UserDto>> GetAllUsers()
+        public DataResult<ICollection<UserDto>> GetAll()
         {
-            ICollection<User> users = _userDal.GetAllUsers();
+            ICollection<User> users = _userDal.GetAllIncludes();
             ICollection<UserDto> result = _mapper.Map<ICollection<UserDto>>(users);
             return new SuccessDataResult<ICollection<UserDto>>(result);
         }

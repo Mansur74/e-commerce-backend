@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
         [HttpGet("/shop")]
         public IActionResult GetAllShops()
         {
-            ICollection<ShopDto> shops = _shopService.GelAllShops();
+            DataResult<ICollection<ShopDto>> shops = _shopService.GelAll();
             return Ok(shops);
         }
 
@@ -30,17 +30,17 @@ namespace WebAPI.Controllers
         {
             if(ModelState.IsValid)
             {
-                ShopDto createdShop = _shopService.CreateShop(shopDto, id);
-                return Ok(createdShop);
+                Result result = _shopService.Create(shopDto, id);
+                return Ok(result);
             }
-          
-                List<string> errors = ModelState.Values
+
+            List<string> errors = ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
                     .ToList();
-                return StatusCode(400, new ErrorDataResult<List<string>>(errors));
-        
-            
+
+            return StatusCode(400, new ErrorDataResult<List<string>>(errors));
+
         }
 
 

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess
+namespace Core.DataAccess
 {
     public class DataContext : DbContext
     {
@@ -15,7 +15,7 @@ namespace DataAccess
 
         }
 
-        public DbSet<User> Users {  get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -30,7 +30,7 @@ namespace DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRole>()
-                .HasKey(ur => new { ur.UserId, ur.RoleId});
+                .HasKey(ur => new { ur.UserId, ur.RoleId });
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
@@ -51,7 +51,7 @@ namespace DataAccess
                 .HasForeignKey(pc => pc.ProductId);
 
             modelBuilder.Entity<ProductCategory>()
-                .HasOne(pc =>pc.Category)
+                .HasOne(pc => pc.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(pc => pc.CategoryId);
         }

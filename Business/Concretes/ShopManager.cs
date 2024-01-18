@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Entities.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,31 +24,44 @@ namespace Business.Concretes
             _userDal = userDal;
             _mapper = mapper;
         }
-        public ShopDto CreateShop(ShopDto shopDto, int userId)
+        public Result Create(ShopDto shopDto, int userId)
         {
-            User? user = _userDal.GetUserById(userId);
+            User? user = _userDal.Get(u => u.Id == userId);
+            if (user == null)
+                return new ErrorResult("User does not exists");
+
             Shop shop = _mapper.Map<Shop>(shopDto);
             shop.User = user;
-            Shop? createdShop = _shopDal.CreateShop(shop);
-            return _mapper.Map<ShopDto>(createdShop);
+            _shopDal.Create(shop);
+            return new SuccessResult("Shop was created successfully");
         }
 
-        public ICollection<ShopDto> GelAllShops()
+        public Result Delete(int id)
         {
-            ICollection<Shop> shops = _shopDal.GelAllShops();
-            return _mapper.Map<ICollection<ShopDto>>(shops);
+            Shop? shop = _shopDal.Get(s => s.Id == id);
+            if (shop == null)
+                return new ErrorResult("Shop was already deleted");
+
+            _shopDal.Delete(id);
+            return new SuccessResult("Shop was removed successfully");
         }
 
-        public ShopDto GetShopById(int shopId)
+        public DataResult<ICollection<ShopDto>> GelAll()
         {
-            Shop? shop = _shopDal.GetShopById(shopId);
-            return _mapper.Map<ShopDto>(shop);
+            ICollection<Shop> shops = _shopDal.GetAll();
+            ICollection<ShopDto> result = _mapper.Map<ICollection<ShopDto>>(shops);
+            return new SuccessDataResult<ICollection<ShopDto>>(result);
         }
 
-        public ShopDto UpdateShop(ShopDto shop, int shopId)
+        public DataResult<ShopDto> GetById(int shopId)
         {
-            Shop? updatedShop = _shopDal.UpdateShop(_mapper.Map<Shop>(shop), shopId);
-            return _mapper.Map<ShopDto>(updatedShop);
+            Shop? shop = _shopDal.Get(s => s.Id == shopId);
+            if (shop == null)
+                return new ErrorDataResult<ShopDto>(null, "Shop does not exists");
+
+            ShopDto result = _mapper.Map<ShopDto>(shop);
+            return new SuccessDataResult<ShopDto>(result);
         }
+
     }
 }

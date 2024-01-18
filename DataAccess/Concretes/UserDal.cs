@@ -1,4 +1,5 @@
-﻿using DataAccess.Abstracts;
+﻿using Core.DataAccess;
+using DataAccess.Abstracts;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,49 +10,30 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concretes
 {
-    public class UserDal : IUserDal
+    public class UserDal : Repository<User>, IUserDal
     {
         private readonly DataContext _dbContext;
-        public UserDal(DataContext dbContext)
+        public UserDal(DataContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
-        public User? CreateUser(User user)
-        {
-            Role? role = _dbContext.Roles.Where(r => r.Name == "ADMIN").FirstOrDefault();
-            if(role != null)
-            {
-                UserRole usersRoles = new UserRole
-                {
-                    User = user,
-                    Role = role
-                };
 
-                _dbContext.Users.Add(user);
-                _dbContext.Add(usersRoles);
-                _dbContext.SaveChanges();
-            }
-            return _dbContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+        public void CreateUserRole(UserRole userRole)
+        {
+            _dbContext.Add(userRole);
+            _dbContext.SaveChanges();
         }
 
-        public ICollection<User> GetAllUsers()
+        public ICollection<User> GetAllIncludes()
         {
-            ICollection<User> users = _dbContext.Users.Include(u => u.Roles).ThenInclude(ur => ur.Role).ToList();
-            return users;
-
+            return _dbContext.Users.Include(u => u.Roles).ThenInclude(ur => ur.Role).ToList();
         }
 
         public User? GetUserByEmail(string email)
         {
             User? user = _dbContext.Users.Where(u => u.Email.Equals(email)).Include(u => u.Roles).ThenInclude(ur => ur.Role).FirstOrDefault();
             return user;
-
         }
 
-        public User? GetUserById(int id)
-        {
-            User? user = _dbContext.Users.Where(u => u.Id == id).FirstOrDefault();
-            return user;
-        }
     }
 }
