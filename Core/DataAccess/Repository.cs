@@ -19,17 +19,23 @@ namespace Core.DataAccess
         }
         public void Create(TEntity entity)
         {
-            _dataContext.Set<TEntity>().Add(entity);
+            var createdEntity = _dataContext.Entry(entity);
+            createdEntity.State = EntityState.Added;
             _dataContext.SaveChanges();
         }
-        public void Delete(int id)
+        public void Delete(TEntity entity)
         {
-
-            _dataContext.Remove(id);
+            var deletedEntity = _dataContext.Entry(entity);
+            deletedEntity.State = EntityState.Deleted;
             _dataContext.SaveChanges();
-            
         }
 
+        public void Update(TEntity entity)
+        {
+            var updatedEntity = _dataContext.Entry(entity);
+            updatedEntity.State = EntityState.Modified;
+            _dataContext.SaveChanges();
+        }
         public ICollection<TEntity> GetAll(Expression<Func<TEntity, bool>>? filter = null)
         {
             return filter == null
@@ -37,10 +43,11 @@ namespace Core.DataAccess
                 : _dataContext.Set<TEntity>().Where(filter).ToList();
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)
+        public TEntity? Get(Expression<Func<TEntity, bool>> filter)
         {
            return _dataContext.Set<TEntity>().Where(filter).SingleOrDefault();
         }
 
+       
     }
 }

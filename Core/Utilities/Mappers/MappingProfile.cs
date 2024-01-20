@@ -20,6 +20,13 @@ namespace Core.Utilities.Mappers
             CreateMap<UserDto, User>();
             CreateMap<ShopDto, Shop>();
             CreateMap<Shop, ShopDto>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>();
+            CreateMap<Shipment, ShipmentDto>();
+            CreateMap<ShipmentDto, Shipment>();
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderDto, Order>();
         }
+
     }
 }

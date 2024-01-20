@@ -4,10 +4,10 @@ using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Core.DataAccess;
+using WebAPI.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,12 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserDal, UserDal>();
 builder.Services.AddScoped<IRoleDal, RoleDal>();
 builder.Services.AddScoped<IShopDal, ShopDal>();
+builder.Services.AddScoped<IProductDal, ProductDal>();
 
 //services
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IAuthService, AuthManager>();
 builder.Services.AddScoped<ITokenService, TokenManager>();
 builder.Services.AddScoped<IShopService, ShopManager> ();
+builder.Services.AddScoped<IProductService, ProductManager>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -67,6 +69,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -77,6 +82,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler();
 
 app.UseAuthorization();
 

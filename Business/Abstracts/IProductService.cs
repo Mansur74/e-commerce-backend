@@ -14,6 +14,7 @@ namespace Business.Abstracts
         public DataResult<ICollection<ProductDto>> GetAll();
         public DataResult<ProductDto> GetById(int id);
         public Result Create(ProductDto productDto, int shopId);
+        public Result Update(ProductDto productDto, int productId);
         public Result Delete(int id);
     }
 }

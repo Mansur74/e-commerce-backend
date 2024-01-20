@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
+using Core.Exceptions;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -28,7 +29,7 @@ namespace Business.Concretes
         {
             User? user = _userDal.Get(u => u.Id == userId);
             if (user == null)
-                return new ErrorResult("User does not exists");
+                throw new NotFoundException("User does not exists");
 
             Shop shop = _mapper.Map<Shop>(shopDto);
             shop.User = user;
@@ -40,9 +41,9 @@ namespace Business.Concretes
         {
             Shop? shop = _shopDal.Get(s => s.Id == id);
             if (shop == null)
-                return new ErrorResult("Shop was already deleted");
+                throw new NotFoundException("Shop was already deleted");
 
-            _shopDal.Delete(id);
+            _shopDal.Delete(shop);
             return new SuccessResult("Shop was removed successfully");
         }
 
@@ -57,7 +58,7 @@ namespace Business.Concretes
         {
             Shop? shop = _shopDal.Get(s => s.Id == shopId);
             if (shop == null)
-                return new ErrorDataResult<ShopDto>(null, "Shop does not exists");
+                throw new NotFoundException("Shop was already deleted");
 
             ShopDto result = _mapper.Map<ShopDto>(shop);
             return new SuccessDataResult<ShopDto>(result);

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
+using Core.Exceptions;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
@@ -35,6 +36,16 @@ namespace Business.Concretes
             ICollection<User> users = _userDal.GetAllIncludes();
             ICollection<UserDto> result = _mapper.Map<ICollection<UserDto>>(users);
             return new SuccessDataResult<ICollection<UserDto>>(result);
+        }
+
+        public DataResult<UserDto> GetById(int id)
+        {
+            User? user = _userDal.Get(u => u.Id == id);
+            if (user == null)
+                throw new NotFoundException("User does not exist");
+
+            UserDto result = _mapper.Map<UserDto>(user);
+            return new SuccessDataResult<UserDto>(result);
         }
     }
 }

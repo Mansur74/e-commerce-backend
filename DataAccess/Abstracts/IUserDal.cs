@@ -12,6 +12,7 @@ namespace DataAccess.Abstracts
     {
         public void CreateUserRole(UserRole userRole);
         public User? GetUserByEmail(string email);
+        public User? GetUserByUserName(string userName);
         public ICollection<User> GetAllIncludes();
 
     }

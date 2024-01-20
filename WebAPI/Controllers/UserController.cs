@@ -3,8 +3,8 @@ using Core.Utilities.Results;
 using Entities.Concretes;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
@@ -19,16 +19,21 @@ namespace WebAPI.Controllers
             this._userService = userService;
         }
 
-
-
         [HttpGet]
         public IActionResult GetUsers()
         {
-            DataResult<ICollection<UserDto>> users = _userService.GetAll();
-            return StatusCode(200, users);
+            DataResult<ICollection<UserDto>> result = _userService.GetAll();
+            return StatusCode(200, result);
         }
 
-       
+        [HttpGet("{id}")]
+        public IActionResult GetUserById(int id)
+        {
+            DataResult<UserDto> result = _userService.GetById(id);
+            return StatusCode(200, result);
+        }
+
+        [ValidationFilter]
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto user)
         {

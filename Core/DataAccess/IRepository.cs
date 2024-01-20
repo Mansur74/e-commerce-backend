@@ -12,8 +12,9 @@ namespace Core.DataAccess
     public interface IRepository<T> where T : class, new()
     {
         public ICollection<T> GetAll(Expression<Func<T, bool>>? filter = null);
-        public T Get(Expression<Func<T, bool>> filter);
+        public T? Get(Expression<Func<T, bool>> filter);
         public void Create(T entity);
-        public void Delete(int id);
+        public void Update(T entity);
+        public void Delete(T entity);
     }
 }

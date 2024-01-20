@@ -35,5 +35,10 @@ namespace DataAccess.Concretes
             return user;
         }
 
+        public User? GetUserByUserName(string userName)
+        {
+            User? user = _dbContext.Users.Where(u => u.UserName.Equals(userName)).Include(u => u.Roles).ThenInclude(ur => ur.Role).FirstOrDefault();
+            return user;
+        }
     }
 }
