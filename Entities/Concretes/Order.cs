@@ -17,6 +17,6 @@ namespace Entities.Concretes
         public User User { get; set; }
         public Shipment Shipment { get; set; }
         public Payment Payment { get; set; }
-        public ICollection<OrderItem> OrderItems {  get; set; } = new List<OrderItem>();
+        public ICollection<OrderItem> OrderItems {  get; set; }
     }
 }

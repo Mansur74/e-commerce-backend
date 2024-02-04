@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Entities.Concretes;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Entities.Concretes
+namespace Entities.Dtos
 {
-    public class Cart
+    public class OrderItemDto
     {
-        [Key]
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public User User { get; set; }
+        public decimal Price { get; set; }
         public Product Product { get; set; }
-
+        public Order Order { get; set; }
     }
 }

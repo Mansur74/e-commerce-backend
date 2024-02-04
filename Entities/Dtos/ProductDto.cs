@@ -21,7 +21,7 @@ namespace Entities.Dtos
         [Required]
         public int Stock { get; set; }
         public Shop? Shop { get; set; }
-        public ICollection<Cart>? Carts { get; set; }
+        public ICollection<CartDto>? Carts { get; set; }
         public ICollection<OrderItem>? OrderItems { get; set; }
         public ICollection<Wishlist>? Wishlists { get; set; }
         public ICollection<ProductCategory>? Categories { get; set; }

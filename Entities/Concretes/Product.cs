@@ -17,10 +17,10 @@ namespace Entities.Concretes
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public Shop Shop { get; set; }
-        public ICollection<Cart> Carts {  get; set; } = new List<Cart>();
-        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-        public ICollection<Wishlist> Wishlists { get; set; } = new List<Wishlist>();
-        public ICollection<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
+        public ICollection<Cart> Carts {  get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<Wishlist> Wishlists { get; set; }
+        public ICollection<ProductCategory> Categories { get; set; }
 
     }
 }

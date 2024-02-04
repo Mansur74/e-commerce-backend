@@ -19,7 +19,7 @@ namespace Entities.Concretes
         public string Country { get; set; }
         public string ZipCode { get; set; }
         public User User { get; set; }
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ICollection<Order> Orders { get; set; }
 
     }
 }

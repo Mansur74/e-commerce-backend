@@ -16,8 +16,7 @@ namespace Entities.Concretes
         public DateTime PaymentDate { get; set; }
         public string PaymentMethod { get; set; }
         public User User { get; set; }
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
-
+        public ICollection<Order> Orders { get; set; }
 
     }
 }

@@ -16,6 +16,6 @@ namespace Entities.Concretes
         public int Id { get; set; }
         public string? Name { get; set; }
         [JsonIgnore]
-        public ICollection<UserRole> Users {  get; set; } = new List<UserRole>();
+        public ICollection<UserRole> Users {  get; set; }
     }
 }
