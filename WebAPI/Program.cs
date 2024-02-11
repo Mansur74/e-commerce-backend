@@ -18,6 +18,8 @@ builder.Services.AddScoped<IUserDal, UserDal>();
 builder.Services.AddScoped<IRoleDal, RoleDal>();
 builder.Services.AddScoped<IShopDal, ShopDal>();
 builder.Services.AddScoped<IProductDal, ProductDal>();
+builder.Services.AddScoped<IProductCategoryDal, ProductCategoryDal>();
+builder.Services.AddScoped<ICategoryDal, CategoryDal>();
 
 //services
 builder.Services.AddScoped<IUserService, UserManager>();
@@ -25,6 +27,7 @@ builder.Services.AddScoped<IAuthService, AuthManager>();
 builder.Services.AddScoped<ITokenService, TokenManager>();
 builder.Services.AddScoped<IShopService, ShopManager> ();
 builder.Services.AddScoped<IProductService, ProductManager>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -80,6 +83,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 app.UseHttpsRedirection();
 

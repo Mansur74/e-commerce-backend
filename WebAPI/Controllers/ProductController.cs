@@ -35,9 +35,9 @@ namespace WebAPI.Controllers
 
         [ValidationFilter]
         [HttpPost("shop/{shopId}/product")]
-        public IActionResult CreateProduct([FromBody] ProductDto productDto, int shopId)
+        public IActionResult CreateProduct([FromBody] ProductDto productDto, int shopId, [FromQuery] int categoryId)
         {
-            Result result = _productService.Create(productDto, shopId);
+            Result result = _productService.Create(productDto, shopId, categoryId);
             return StatusCode(201, result);
         }
 

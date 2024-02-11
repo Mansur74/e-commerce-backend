@@ -19,14 +19,23 @@ namespace Business.Concretes
         private readonly IMapper _mapper;
         private readonly IProductDal _productDal;
         private readonly IShopDal _shoptDal;
-        public ProductManager(IMapper mapper, IProductDal productDal, IShopDal shoptDal)
+        private readonly ICategoryDal _categoryDal;
+        private readonly IProductCategoryDal _productCategoryDal;
+
+        public ProductManager(IMapper mapper, IProductDal productDal, IShopDal shoptDal, ICategoryDal categoryDal, IProductCategoryDal productCategoryDal)
         {
             _mapper = mapper;
             _productDal = productDal;
             _shoptDal = shoptDal;
+            _categoryDal = categoryDal;
+            _productCategoryDal = productCategoryDal;
         }
-        public Result Create(ProductDto productDto, int shopId)
+        public Result Create(ProductDto productDto, int shopId, int categoryId)
         {
+            Category? category = _categoryDal.Get(c => c.Id == categoryId);
+            if (category == null)
+                throw new NotFoundException("Category does not exist");
+
             Shop? shop = _shoptDal.Get(s => s.Id == shopId);
             if (shop == null)
                 throw new NotFoundException("Shop does not exist");
@@ -34,6 +43,14 @@ namespace Business.Concretes
             Product product = _mapper.Map<ProductDto, Product>(productDto);
             product.Shop = shop;
             _productDal.Create(product);
+
+            ProductCategory pc = new ProductCategory
+            {
+                Product = product,
+                Category = category,
+            };
+            _productCategoryDal.Create(pc);
+
             return new SuccessResult("Product was created successfully");
         }
 
@@ -64,14 +81,14 @@ namespace Business.Concretes
 
         public DataResult<ICollection<ProductDto>> GetAll()
         {
-            ICollection<Product> products = _productDal.GetAll();
+            ICollection<Product> products = _productDal.GetAllIncludes();
             ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
             return new SuccessDataResult<ICollection<ProductDto>>(result);
         }
 
         public DataResult<ProductDto> GetById(int id)
         {
-            Product? product = _productDal.Get(p => p.Id == id);
+            Product? product = _productDal.GetIncludes(p => p.Id == id);
             if (product == null)
                 throw new NotFoundException("Product does not exist");
             ProductDto result = _mapper.Map<ProductDto>(product);

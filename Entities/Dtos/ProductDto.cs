@@ -18,12 +18,13 @@ namespace Entities.Dtos
         public string Description { get; set; }
         [Required]
         public decimal Price { get; set; }
+        public decimal Color { get; set; }
         [Required]
         public int Stock { get; set; }
         public Shop? Shop { get; set; }
         public ICollection<CartDto>? Carts { get; set; }
         public ICollection<OrderItem>? OrderItems { get; set; }
         public ICollection<Wishlist>? Wishlists { get; set; }
-        public ICollection<ProductCategory>? Categories { get; set; }
+        public ICollection<Category>? Categories { get; set; }
     }
 }

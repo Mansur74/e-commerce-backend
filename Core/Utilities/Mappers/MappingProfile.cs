@@ -26,6 +26,11 @@ namespace Core.Utilities.Mappers
             CreateMap<ShipmentDto, Shipment>();
             CreateMap<Order, OrderDto>();
             CreateMap<OrderDto, Order>();
+            CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryDto, Category>();
+
+            CreateMap<Product, ProductDto>().ForMember(p => p.Categories, opt => opt.MapFrom(p => p.Categories.Select(pc => pc.Category)));
+            CreateMap<ProductDto, Product>();
         }
 
     }
