@@ -12,16 +12,19 @@ namespace Entities.Concretes
     {
         [Key]
         public int Id { get; set; }
+        public string Name { get; set; }    
         public string SKU { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public decimal Color { get; set; }
+        public string Color { get; set; }
         public int Stock { get; set; }
         public Shop Shop { get; set; }
         public ICollection<Cart> Carts {  get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
         public ICollection<Wishlist> Wishlists { get; set; }
         public ICollection<ProductCategory> Categories { get; set; }
+        public ICollection<ProductReview>? Reviews { get; set; }
+        public ICollection<ProductRate>? Rates { get; set; }
 
     }
 }

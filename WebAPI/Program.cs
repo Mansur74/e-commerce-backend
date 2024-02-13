@@ -20,6 +20,8 @@ builder.Services.AddScoped<IShopDal, ShopDal>();
 builder.Services.AddScoped<IProductDal, ProductDal>();
 builder.Services.AddScoped<IProductCategoryDal, ProductCategoryDal>();
 builder.Services.AddScoped<ICategoryDal, CategoryDal>();
+builder.Services.AddScoped<IProductRateDal, ProductRateDal>();
+builder.Services.AddScoped<IProductReviewDal, ProductReviewDal>();
 
 //services
 builder.Services.AddScoped<IUserService, UserManager>();
@@ -28,6 +30,8 @@ builder.Services.AddScoped<ITokenService, TokenManager>();
 builder.Services.AddScoped<IShopService, ShopManager> ();
 builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
+builder.Services.AddScoped<IProductRateService, ProductRateManager>();
+builder.Services.AddScoped<IProductReviewService, ProductReviewManager>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

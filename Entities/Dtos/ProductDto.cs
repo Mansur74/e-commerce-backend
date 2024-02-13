@@ -12,13 +12,14 @@ namespace Entities.Dtos
     public class ProductDto
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         [Required]
         public string SKU { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
         public decimal Price { get; set; }
-        public decimal Color { get; set; }
+        public string Color { get; set; }
         [Required]
         public int Stock { get; set; }
         public Shop? Shop { get; set; }

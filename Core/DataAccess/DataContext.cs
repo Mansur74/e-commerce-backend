@@ -25,10 +25,16 @@ namespace Core.DataAccess
         public DbSet<Order> Orders { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ProductReview> ProductReviews { get; set; }
+        public DbSet<ProductRate> ProductRates { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             modelBuilder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
 
@@ -79,6 +85,29 @@ namespace Core.DataAccess
                .HasOne(oi => oi.Product)
                .WithMany(p => p.OrderItems)
                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProductRate>()
+                .HasKey(pr => new { pr.UserId, pr.ProductId});
+
+            modelBuilder.Entity<ProductRate>()
+                .HasOne(pr => pr.User)
+                .WithMany(u => u.ProductRates)
+                .HasForeignKey(pr => pr.UserId);
+
+            modelBuilder.Entity<ProductRate>()
+                .HasOne(pr => pr.Product)
+                .WithMany(p => p.Rates)
+                .HasForeignKey(pr => pr.ProductId);
+
+            modelBuilder.Entity<ProductRate>()
+                .HasOne(pr => pr.Product)
+                .WithMany(p => p.Rates)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProductReview>()
+                .HasOne(pr => pr.Product)
+                .WithMany(p => p.Reviews)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
         }

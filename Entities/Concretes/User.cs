@@ -24,5 +24,7 @@ namespace Entities.Concretes
         public ICollection<Payment>? Payments { get; set; }
         public ICollection<Wishlist>? Wishlists { get; set; }
         public ICollection<Shipment>? Shipments { get; set; }
+        public ICollection<ProductReview>? ProductReviews { get; set; }
+        public ICollection<ProductRate>? ProductRates { get; set; }
     }
 }
