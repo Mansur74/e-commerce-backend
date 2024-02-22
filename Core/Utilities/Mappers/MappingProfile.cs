@@ -32,6 +32,8 @@ namespace Core.Utilities.Mappers
             CreateMap<ProductReview, ProductReviewDto>();
             CreateMap<ProductRateDto, ProductRate>();
             CreateMap<ProductRate, ProductRateDto>();
+            CreateMap<CartDto, Cart>();
+            CreateMap<Cart, CartDto>();
 
             CreateMap<Product, ProductDto>().ForMember(p => p.Categories, opt => opt.MapFrom(p => p.Categories.Select(pc => pc.Category)));
             CreateMap<ProductDto, Product>();

@@ -22,6 +22,7 @@ builder.Services.AddScoped<IProductCategoryDal, ProductCategoryDal>();
 builder.Services.AddScoped<ICategoryDal, CategoryDal>();
 builder.Services.AddScoped<IProductRateDal, ProductRateDal>();
 builder.Services.AddScoped<IProductReviewDal, ProductReviewDal>();
+builder.Services.AddScoped<ICartDal, CartDal>();
 
 //services
 builder.Services.AddScoped<IUserService, UserManager>();
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 builder.Services.AddScoped<IProductRateService, ProductRateManager>();
 builder.Services.AddScoped<IProductReviewService, ProductReviewManager>();
+builder.Services.AddScoped<ICartService, CartManager>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

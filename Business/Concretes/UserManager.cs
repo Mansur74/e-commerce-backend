@@ -47,5 +47,15 @@ namespace Business.Concretes
             UserDto result = _mapper.Map<UserDto>(user);
             return new SuccessDataResult<UserDto>(result);
         }
+
+        public DataResult<UserDto> GetUserByEmail(string email)
+        {
+            User? user = _userDal.GetUserByEmail(email);
+            if (user == null)
+                throw new NotFoundException("User does not exist");
+
+            UserDto result = _mapper.Map<UserDto>(user);
+            return new SuccessDataResult<UserDto>(result);
+        }
     }
 }

@@ -2,12 +2,14 @@
 using Core.Utilities.Results;
 using DataAccess.Concretes;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -22,6 +24,13 @@ namespace WebAPI.Controllers
         public IActionResult GetProducts() 
         {
             DataResult<ICollection<ProductDto>> result = _productService.GetAll();
+            return StatusCode(200, result);
+        }
+
+        [HttpGet("products")]
+        public IActionResult GetProductsWithCategory([FromQuery] string categoryName)
+        {
+            DataResult<ICollection<ProductDto>> result = _productService.GetAllByCategoryName(categoryName);
             return StatusCode(200, result);
         }
 
@@ -55,6 +64,7 @@ namespace WebAPI.Controllers
             Result result = _productService.Delete(productId);
             return StatusCode(200, result);
         }
+
 
     }
 }

@@ -11,7 +11,7 @@ namespace WebAPI.Infrastructure
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
 
-            var responseModel = new ErrorDataResult<string>(exception.Message);
+            var responseModel = new ErrorResult(exception.Message);
             httpContext.Response.StatusCode = exception switch
             {
                 NotFoundException => (int)HttpStatusCode.NotFound,

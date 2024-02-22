@@ -1,4 +1,5 @@
 ﻿using Business.Abstracts;
+using Core.Exceptions;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -23,7 +24,7 @@ namespace DataAccess.Concretes
             string email = this._tokenService.ValidateRefreshToken(refreshToken.RefreshToken);
             User user = _userDal.GetUserByEmail(email);
             List<Claim> claims = new List<Claim> {
-                        new Claim("email", user.Email),
+                        new Claim(ClaimTypes.Name, user.Email),
                     };
 
             foreach (var userRole in user.Roles)
@@ -38,10 +39,10 @@ namespace DataAccess.Concretes
         public DataResult<JwtResponseDto> Login(AuthRequestDto request)
         {
             User user = _userDal.GetUserByEmail(request.Email);
-            if (user != null && request.Email.Equals(user.Email))
+            if (user != null && request.Email.Equals(user.Email) && request.Password.Equals(user.Password))
             {
                 List<Claim> claims = new List<Claim> {
-                        new Claim("email", user.Email),
+                        new Claim(ClaimTypes.Name, user.Email),
                     };
 
                 foreach (var userRole in user.Roles)
@@ -53,7 +54,7 @@ namespace DataAccess.Concretes
                 return new SuccessDataResult<JwtResponseDto>(new JwtResponseDto {AccessToken = accessToken, RefreshToken = refreshToken });
             }
             else
-                throw new Exception("Username does't exists");
+                throw new NotFoundException("Username does't exists");
         }
     }
 }

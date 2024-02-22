@@ -11,7 +11,7 @@ namespace Entities.Dtos
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        User User { get; set; }
-        Product Product { get; set; }
+        public User User { get; set; }
+        public Product Product { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class ProductRateController : ControllerBase
     {
@@ -17,14 +17,21 @@ namespace WebAPI.Controllers
             _productRateService = productRateService;
         }
 
-        [HttpPost("/productRate")]
+        [HttpPost("productRate")]
         public IActionResult Create([FromBody] ProductRateDto productRateDto, [FromQuery] int userId, [FromQuery] int productId)
         {
             Result result = _productRateService.Create(productRateDto, userId, productId);
             return StatusCode(201, result);
         }
 
-        [HttpGet("/productRate")]
+        [HttpGet("productRate")]
+        public IActionResult GetById([FromQuery] int userId, [FromQuery] int productId)
+        {
+            Result result = _productRateService.GetById(userId, productId);
+            return StatusCode(200, result);
+        }
+
+        [HttpGet("productRates")]
         public IActionResult GetAll()
         {
             DataResult<ICollection<ProductRateDto>> result = _productRateService.GetAll();

@@ -5,6 +5,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Entities.Dtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,14 +49,14 @@ namespace Business.Concretes
 
         public DataResult<ICollection<ProductReviewDto>> GetAll()
         {
-            ICollection<ProductReview> productReviews = _productReviewDal.GetAll();
+            ICollection<ProductReview> productReviews = _productReviewDal.GetAll(pr => pr.Include(pr => pr.User).Include(pr => pr.Product));
             ICollection<ProductReviewDto> result = _mapper.Map<ICollection<ProductReviewDto>>(productReviews);
             return new SuccessDataResult<ICollection<ProductReviewDto>>(result);
         }
 
         public DataResult<ProductReviewDto> GetById(int id)
         {
-            ProductReview productReview = _productReviewDal.Get(pr => pr.Id == id);
+            ProductReview? productReview = _productReviewDal.Get(pr => pr.Id == id);
             ProductReviewDto result = _mapper.Map<ProductReviewDto>(productReview);
             return new SuccessDataResult<ProductReviewDto>(result);
         }

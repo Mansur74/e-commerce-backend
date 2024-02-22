@@ -9,10 +9,9 @@ namespace Entities.Dtos
 {
     public class ProductReviewDto
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public User User { get; set; }
-        public int ProductId { get; set; }
         public Product Product { get; set; }
-        public int Comment { get; set; }
+        public string Review { get; set; }
     }
 }

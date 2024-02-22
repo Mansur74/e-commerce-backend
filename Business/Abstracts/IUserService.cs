@@ -14,5 +14,6 @@ namespace Business.Abstracts
         public Result Create(UserDto user);
         public DataResult<ICollection<UserDto>> GetAll();
         public DataResult<UserDto> GetById(int id);
+        public DataResult<UserDto> GetUserByEmail(string email);
     }
 }

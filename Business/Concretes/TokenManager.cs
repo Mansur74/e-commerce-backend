@@ -70,7 +70,7 @@ namespace Business.Concretes
 
             if (validatedToken is JwtSecurityToken jwtSecurityToken)
             {
-                string email = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == "email").Value;
+                string email = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 return email;
 
             }

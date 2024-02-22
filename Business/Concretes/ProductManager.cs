@@ -6,6 +6,7 @@ using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entities.Concretes;
 using Entities.Dtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,14 +82,36 @@ namespace Business.Concretes
 
         public DataResult<ICollection<ProductDto>> GetAll()
         {
-            ICollection<Product> products = _productDal.GetAllIncludes();
+            ICollection<Product> products = _productDal.GetAll(p => p
+            .Include(p => p.Shop)
+            .Include(p => p.Reviews)
+            .ThenInclude(pr => pr.User)
+            .Include(p => p.Categories)
+            .ThenInclude(c => c.Category));
+            ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
+            return new SuccessDataResult<ICollection<ProductDto>>(result);
+        }
+
+        public DataResult<ICollection<ProductDto>> GetAllByCategoryName(string categoryName)
+        {
+            ICollection<Product> products = _productDal.GetAll(p => p
+            .Include(p => p.Shop)
+            .Include(p => p.Reviews)
+            .ThenInclude(pr => pr.User)
+            .Include(p => p.Categories)
+            .ThenInclude(c => c.Category), p => p.Categories.SingleOrDefault(c => c.Category.Name == categoryName).Category.Name == categoryName);
             ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
             return new SuccessDataResult<ICollection<ProductDto>>(result);
         }
 
         public DataResult<ProductDto> GetById(int id)
         {
-            Product? product = _productDal.GetIncludes(p => p.Id == id);
+            Product? product = _productDal.Get(p => p.Id == id, p => p
+            .Include(p => p.Shop)
+            .Include(p => p.Reviews)
+            .ThenInclude(pr => pr.User)
+            .Include(p => p.Categories)
+            .ThenInclude(c => c.Category));
             if (product == null)
                 throw new NotFoundException("Product does not exist");
             ProductDto result = _mapper.Map<ProductDto>(product);

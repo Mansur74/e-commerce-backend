@@ -1,9 +1,10 @@
 ﻿using Business.Abstracts;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
-using Entities.Concretes;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace WebAPI.Controllers
 {
@@ -43,6 +44,17 @@ namespace WebAPI.Controllers
         {
             Result result = _userService.Create(user);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            var email = User.Identity?.Name!;
+            DataResult<UserDto> user = _userService.GetUserByEmail(email);
+            return Ok(user);
+
+
         }
     }
 }

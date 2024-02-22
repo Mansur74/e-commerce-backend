@@ -17,6 +17,7 @@ namespace Entities.Concretes
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string Color { get; set; }
+        public string ImgURL { get; set; }
         public int Stock { get; set; }
         public Shop Shop { get; set; }
         public ICollection<Cart> Carts {  get; set; }

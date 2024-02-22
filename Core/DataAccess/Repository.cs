@@ -1,5 +1,6 @@
 ﻿using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,16 +37,26 @@ namespace Core.DataAccess
             updatedEntity.State = EntityState.Modified;
             _dataContext.SaveChanges();
         }
-        public ICollection<TEntity> GetAll(Expression<Func<TEntity, bool>>? filter = null)
+        public ICollection<TEntity> GetAll(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, Expression<Func<TEntity, bool>>? filter = null)
         {
+            var query = _dataContext.Set<TEntity>().AsQueryable();
+
+            if (include != null)
+                query = include(query);
+
             return filter == null
-                ? _dataContext.Set<TEntity>().ToList()
-                : _dataContext.Set<TEntity>().Where(filter).ToList();
+                ? query.ToList()
+                : query.Where(filter).ToList();
         }
 
-        public TEntity? Get(Expression<Func<TEntity, bool>> filter)
+        public TEntity? Get(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-           return _dataContext.Set<TEntity>().Where(filter).SingleOrDefault();
+            var query = _dataContext.Set<TEntity>().AsQueryable();
+
+            if (include != null)
+                query = include(query);
+
+            return query.Where(filter).SingleOrDefault();
         }
 
        
