@@ -19,6 +19,15 @@ namespace WebAPI.Controllers
             this._userService = userService;
         }
 
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult GetMe()
+        {
+            var email = User.Identity?.Name!;
+            DataResult<UserDto> user = _userService.GetUserByEmail(email);
+            return Ok(user);
+        }
+
         [HttpGet]
         public IActionResult GetUsers()
         {

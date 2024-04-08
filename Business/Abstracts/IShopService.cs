@@ -13,7 +13,8 @@ namespace Business.Abstracts
     {
         public DataResult<ICollection<ShopDto>> GelAll();
         public DataResult<ShopDto> GetById(int shopId);
-        public Result Create(ShopDto shop, int userId);
+        public Result Create(ShopDto shopDto, int userId);
+        public Result Update(ShopDto shopDto, int shopId);
         public Result Delete(int id);
     }
 }

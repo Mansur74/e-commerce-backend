@@ -12,6 +12,7 @@ namespace Business.Abstracts
     {
         public Result Create(CartDto cartDto, int userId, int productId);
         public Result Update(CartDto cartDto, int cartId);
+        public Result Delete(int cartId);
         public DataResult<ICollection<CartDto>> GetAllCarts();
 
     }

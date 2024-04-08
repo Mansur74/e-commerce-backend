@@ -46,6 +46,15 @@ namespace Business.Concretes
             return new SuccessResult("Cart was created successfully");
         }
 
+        public Result Delete(int cartId)
+        {
+            Cart? cart = _cartDal.Get(c => c.Id == cartId);
+            if (cart == null)
+                throw new NotFoundException("Cart does not exist");
+            _cartDal.Delete(cart); 
+            return new SuccessResult("Cart was deleted successfully");
+        }
+
         public DataResult<ICollection<CartDto>> GetAllCarts()
         {
             ICollection<Cart> carts = _cartDal.GetAllIncludes();

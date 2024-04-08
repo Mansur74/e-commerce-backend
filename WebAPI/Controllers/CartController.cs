@@ -40,5 +40,13 @@ namespace WebAPI.Controllers
             return StatusCode(200, result);
 
         }
+        [HttpDelete("cart/{cartId}")]
+        public IActionResult DeleteCart(int cartId)
+        {
+            Result result = _cartService.Delete(cartId);
+            return StatusCode(200, result);
+
+        }
+
     }
 }

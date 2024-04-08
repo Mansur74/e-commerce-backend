@@ -46,15 +46,5 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize]
-        [HttpGet("me")]
-        public IActionResult Me()
-        {
-            var email = User.Identity?.Name!;
-            DataResult<UserDto> user = _userService.GetUserByEmail(email);
-            return Ok(user);
-
-
-        }
     }
 }

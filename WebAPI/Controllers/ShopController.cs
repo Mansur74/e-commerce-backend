@@ -19,18 +19,33 @@ namespace WebAPI.Controllers
             _shopService = shopService;
         }
 
-        [HttpGet("/shop")]
+        [HttpGet("shop")]
         public IActionResult GetAllShops()
         {
             DataResult<ICollection<ShopDto>> shops = _shopService.GelAll();
             return Ok(shops);
         }
 
-        [ValidationFilter]
-        [HttpPost("/user/{id}/shop")]
-        public IActionResult CreateShop([FromBody] ShopDto shopDto, int id)
+        [HttpGet("shop/{shopId}")]
+        public IActionResult GetShopById(int shopId)
         {
-            Result result = _shopService.Create(shopDto, id);
+            DataResult<ShopDto> result = _shopService.GetById(shopId);
+            return Ok(result);
+        }
+
+        [ValidationFilter]
+        [HttpPost("user/{shopId}/shop")]
+        public IActionResult CreateShop([FromBody] ShopDto shopDto, int shopId)
+        {
+            Result result = _shopService.Create(shopDto, shopId);
+            return Ok(result);
+        }
+
+        [ValidationFilter]
+        [HttpPut("shop/{shopId}")]
+        public IActionResult UpdateShop([FromBody] ShopDto shopDto, int shopId)
+        {
+            Result result = _shopService.Update(shopDto, shopId);
             return Ok(result);
         }
 

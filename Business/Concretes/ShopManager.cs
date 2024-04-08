@@ -5,6 +5,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Entities.Dtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -49,14 +50,14 @@ namespace Business.Concretes
 
         public DataResult<ICollection<ShopDto>> GelAll()
         {
-            ICollection<Shop> shops = _shopDal.GetAll();
+            ICollection<Shop> shops = _shopDal.GetAll(s => s.Include(s => s.User));
             ICollection<ShopDto> result = _mapper.Map<ICollection<ShopDto>>(shops);
             return new SuccessDataResult<ICollection<ShopDto>>(result);
         }
 
         public DataResult<ShopDto> GetById(int shopId)
         {
-            Shop? shop = _shopDal.Get(s => s.Id == shopId);
+            Shop? shop = _shopDal.Get(s => s.Id == shopId, s => s.Include(s => s.User).Include(s => s.Products));
             if (shop == null)
                 throw new NotFoundException("Shop was already deleted");
 
@@ -64,5 +65,17 @@ namespace Business.Concretes
             return new SuccessDataResult<ShopDto>(result);
         }
 
+        public Result Update(ShopDto shopDto, int shopId)
+        {
+            Shop? shop = _shopDal.Get(s => s.Id == shopId);
+            if (shop == null)
+                throw new NotFoundException("Shop does not exist");
+            shop.Name = shopDto.Name;
+            shop.Description = shopDto.Description;
+            shop.FoundedAt = shopDto.FoundedAt;
+            _shopDal.Update(shop);
+            return new SuccessResult("Shop updated successfully");
+
+        }
     }
 }
