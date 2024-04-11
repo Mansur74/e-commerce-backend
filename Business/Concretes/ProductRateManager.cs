@@ -59,5 +59,17 @@ namespace Business.Concretes
             ProductRateDto result = _mapper.Map<ProductRateDto>(productRate);
             return new SuccessDataResult<ProductRateDto>(result);
         }
+
+        public Result Update(ProductRateDto productRateDto, int userId, int productId)
+        {
+            ProductRate? productRate = _productRateDal.Get(pr => pr.UserId == userId && pr.ProductId == productId);
+
+            if (productRate == null)
+                throw new NotFoundException("Product rate does not exist");
+
+            productRate.Rate = productRateDto.Rate;
+            _productRateDal.Update(productRate);
+            return new SuccessResult("Product rate was updated successfully");
+        }
     }
 }

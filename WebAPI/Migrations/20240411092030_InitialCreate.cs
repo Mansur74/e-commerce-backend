@@ -45,7 +45,7 @@ namespace WebAPI.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -313,33 +313,6 @@ namespace WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductReviews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Review = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductReviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductReviews_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProductReviews_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Wishlists",
                 columns: table => new
                 {
@@ -363,6 +336,41 @@ namespace WebAPI.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    RateUserId = table.Column<int>(type: "int", nullable: false),
+                    RateProductId = table.Column<int>(type: "int", nullable: false),
+                    Review = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductReviews_ProductRates_RateUserId_RateProductId",
+                        columns: x => new { x.RateUserId, x.RateProductId },
+                        principalTable: "ProductRates",
+                        principalColumns: new[] { "UserId", "ProductId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductReviews_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductReviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -421,6 +429,11 @@ namespace WebAPI.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductReviews_RateUserId_RateProductId",
+                table: "ProductReviews",
+                columns: new[] { "RateUserId", "RateProductId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductReviews_UserId",
                 table: "ProductReviews",
                 column: "UserId");
@@ -452,6 +465,12 @@ namespace WebAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_UserName",
+                table: "Users",
+                column: "UserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Wishlists_ProductId",
                 table: "Wishlists",
                 column: "ProductId");
@@ -475,9 +494,6 @@ namespace WebAPI.Migrations
                 name: "ProductCategory");
 
             migrationBuilder.DropTable(
-                name: "ProductRates");
-
-            migrationBuilder.DropTable(
                 name: "ProductReviews");
 
             migrationBuilder.DropTable(
@@ -493,16 +509,19 @@ namespace WebAPI.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "ProductRates");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Shipments");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Shops");

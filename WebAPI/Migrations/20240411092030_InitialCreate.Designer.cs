@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240302151354_InitialCreate")]
+    [Migration("20240411092030_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -247,6 +247,12 @@ namespace WebAPI.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RateProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RateUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Review")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -259,6 +265,8 @@ namespace WebAPI.Migrations
                     b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("RateUserId", "RateProductId");
 
                     b.ToTable("ProductReviews");
                 });
@@ -375,11 +383,14 @@ namespace WebAPI.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("Users");
@@ -553,16 +564,24 @@ namespace WebAPI.Migrations
                     b.HasOne("Entities.Concretes.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.Concretes.User", "User")
                         .WithMany("ProductReviews")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Concretes.ProductRate", "Rate")
+                        .WithMany("Reviews")
+                        .HasForeignKey("RateUserId", "RateProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("Rate");
 
                     b.Navigation("User");
                 });
@@ -655,6 +674,11 @@ namespace WebAPI.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("Wishlists");
+                });
+
+            modelBuilder.Entity("Entities.Concretes.ProductRate", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Entities.Concretes.Role", b =>

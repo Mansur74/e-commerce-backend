@@ -34,10 +34,10 @@ namespace WebAPI.Controllers
         }
 
         [ValidationFilter]
-        [HttpPost("user/{shopId}/shop")]
-        public IActionResult CreateShop([FromBody] ShopDto shopDto, int shopId)
+        [HttpPost("user/{userId}/shop")]
+        public IActionResult CreateShop([FromBody] ShopDto shopDto, int userId)
         {
-            Result result = _shopService.Create(shopDto, shopId);
+            Result result = _shopService.Create(shopDto, userId);
             return Ok(result);
         }
 

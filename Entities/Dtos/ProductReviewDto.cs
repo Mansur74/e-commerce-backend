@@ -11,7 +11,8 @@ namespace Entities.Dtos
     {
         public int Id { get; set; }
         public User? User { get; set; }
-        public Product? Product { get; set; }
+        public ProductRate? Rate { get; set; }
         public string Review { get; set; }
+
     }
 }

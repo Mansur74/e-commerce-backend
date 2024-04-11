@@ -86,6 +86,7 @@ namespace Business.Concretes
             .Include(p => p.Shop)
             .Include(p => p.Reviews)
             .ThenInclude(pr => pr.User)
+            .Include(p => p.Rates)
             .Include(p => p.Categories)
             .ThenInclude(c => c.Category));
             ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
@@ -98,6 +99,7 @@ namespace Business.Concretes
             .Include(p => p.Shop)
             .Include(p => p.Reviews)
             .ThenInclude(pr => pr.User)
+            .Include(p => p.Rates)
             .Include(p => p.Categories)
             .ThenInclude(c => c.Category), p => p.Categories.SingleOrDefault(c => c.Category.Name == categoryName).Category.Name == categoryName);
             ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
@@ -110,6 +112,7 @@ namespace Business.Concretes
             .Include(p => p.Shop)
             .Include(p => p.Reviews)
             .ThenInclude(pr => pr.User)
+            .Include(p => p.Rates)
             .Include(p => p.Categories)
             .ThenInclude(c => c.Category));
             if (product == null)

@@ -5,12 +5,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Entities.Dtos;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Business.Concretes
 {
@@ -18,30 +13,35 @@ namespace Business.Concretes
     {
 
         private readonly IProductReviewDal _productReviewDal;
+        private readonly IProductRateDal _productRateDal;
         private readonly IUserDal _userDal;
         private readonly IProductDal _productDal;
         private readonly IMapper _mapper;
 
-        public ProductReviewManager(IProductReviewDal productReviewDal, IUserDal userDal, IProductDal productDal, IMapper mapper)
+        public ProductReviewManager(IProductReviewDal productReviewDal, IUserDal userDal, IProductDal productDal, IProductRateDal productRateDal, IMapper mapper)
         {
-            _productReviewDal = productReviewDal;
             _userDal = userDal;
             _productDal = productDal;
+            _productReviewDal = productReviewDal;
+            _productRateDal = productRateDal;
             _mapper = mapper;
         }
         public Result Create(ProductReviewDto productReviewDto, int userId, int productId)
         {
             User? user = _userDal.Get(u => u.Id == userId);
+            Product? product = _productDal.Get(p => p.Id == productId);
+            ProductRate? rate = _productRateDal.Get(pr => pr.UserId == userId && pr.ProductId == productId);
             if (user == null)
                 throw new NotFoundException("User does not exist");
-
-            Product? product = _productDal.Get(p => p.Id == productId);
             if (product == null)
                 throw new NotFoundException("Product does not exist");
+            if (rate == null)
+                throw new NotFoundException("Product rate does not exist");
 
             ProductReview productReview = _mapper.Map<ProductReview>(productReviewDto);
             productReview.User = user;
             productReview.Product = product;
+            productReview.Rate = rate;
             _productReviewDal.Create(productReview);
 
             return new SuccessResult("Product review was created successfully");
@@ -58,7 +58,7 @@ namespace Business.Concretes
 
         public DataResult<ICollection<ProductReviewDto>> GetAll()
         {
-            ICollection<ProductReview> productReviews = _productReviewDal.GetAll(pr => pr.Include(pr => pr.User).Include(pr => pr.Product));
+            ICollection<ProductReview> productReviews = _productReviewDal.GetAll();
             ICollection<ProductReviewDto> result = _mapper.Map<ICollection<ProductReviewDto>>(productReviews);
             return new SuccessDataResult<ICollection<ProductReviewDto>>(result);
         }

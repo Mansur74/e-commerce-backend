@@ -35,6 +35,10 @@ namespace Core.DataAccess
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+
             modelBuilder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
 
@@ -104,10 +108,20 @@ namespace Core.DataAccess
                 .WithMany(p => p.Rates)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<ProductRate>()
+               .HasOne(pr => pr.Product)
+               .WithMany(p => p.Rates)
+               .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<ProductReview>()
-                .HasOne(pr => pr.Product)
-                .WithMany(p => p.Reviews)
-                .OnDelete(DeleteBehavior.Restrict);
+               .HasOne(pr => pr.User)
+               .WithMany(u => u.ProductReviews)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProductReview>()
+               .HasOne(pr => pr.Rate)
+               .WithMany(u => u.Reviews)
+               .OnDelete(DeleteBehavior.Restrict);
 
 
         }

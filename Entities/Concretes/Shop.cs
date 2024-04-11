@@ -16,6 +16,6 @@ namespace Entities.Concretes
         public string Description { get; set; }
         public DateTime FoundedAt { get; set; }
         public User User { get; set; }
-        public List<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

@@ -24,6 +24,13 @@ namespace WebAPI.Controllers
             return StatusCode(201, result);
         }
 
+        [HttpPut("productRate")]
+        public IActionResult Update([FromBody] ProductRateDto productRateDto, [FromQuery] int userId, [FromQuery] int productId)
+        {
+            Result result = _productRateService.Update(productRateDto, userId, productId);
+            return StatusCode(200, result);
+        }
+
         [HttpGet("productRate")]
         public IActionResult GetById([FromQuery] int userId, [FromQuery] int productId)
         {

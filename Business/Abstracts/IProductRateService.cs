@@ -11,6 +11,7 @@ namespace Business.Abstracts
     public interface IProductRateService
     {
         public Result Create(ProductRateDto productRateDto, int userId, int productId);
+        public Result Update(ProductRateDto productReviewDto, int userId, int productId);
         public DataResult<ICollection<ProductRateDto>> GetAll();
         public DataResult<ProductRateDto> GetById(int userId, int productId);
     }

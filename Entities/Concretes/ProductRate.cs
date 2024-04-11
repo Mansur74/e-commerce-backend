@@ -13,6 +13,7 @@ namespace Entities.Concretes
         public int ProductId { get; set; }
         public Product Product { get; set; }
         public int Rate { get; set; }
+        public ICollection<ProductReview> Reviews { get; set;}
         
     }
 }
