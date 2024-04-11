@@ -95,17 +95,18 @@ namespace Business.Concretes
             return new SuccessDataResult<ICollection<ProductDto>>(result);
         }
 
-        public DataResult<ICollection<ProductDto>> GetAllByCategoryName(string categoryName)
+        public DataResult<PageResult<ProductDto>> GetAllWithProductFilter(ProductFilterDto productFilter, int pageNumber, int pageSize)
         {
-            ICollection<Product> products = _productDal.GetAll(p => p
+            ICollection<Product> products = _productDal.GetAll(pageNumber, pageSize, p => p
             .Include(p => p.Shop)
             .Include(p => p.Rates)
             .ThenInclude(pr => pr.User)
             .Include(p => p.Reviews)
             .ThenInclude(pr => pr.Rate)
-            .ThenInclude(pr => pr.User));
+            .ThenInclude(pr => pr.User), p => productFilter.colors.Contains(p.Color) && p.Rates.Any(r => productFilter.rates.Contains(r.Rate)));
             ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
-            return new SuccessDataResult<ICollection<ProductDto>>(result);
+            PageResult<ProductDto> pageResult = new PageResult<ProductDto> { pageNo = pageNumber, pageSize = pageSize, rows = result};
+            return new SuccessDataResult<PageResult<ProductDto>>(pageResult);
         }
 
         public DataResult<ProductDto> GetById(int id)

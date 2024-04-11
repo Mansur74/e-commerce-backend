@@ -27,10 +27,10 @@ namespace WebAPI.Controllers
             return StatusCode(200, result);
         }
 
-        [HttpGet("products")]
-        public IActionResult GetProductsWithCategory([FromQuery] string categoryName)
+        [HttpPost("products")]
+        public IActionResult GetProductsWithFilter([FromBody] ProductFilterDto productFilterDto, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            DataResult<ICollection<ProductDto>> result = _productService.GetAllByCategoryName(categoryName);
+            DataResult<PageResult<ProductDto>> result = _productService.GetAllWithProductFilter(productFilterDto, pageNumber, pageSize);
             return StatusCode(200, result);
         }
 

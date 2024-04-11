@@ -49,6 +49,18 @@ namespace Core.DataAccess
                 : query.Where(filter).ToList();
         }
 
+        public ICollection<TEntity> GetAll(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, Expression<Func<TEntity, bool>>? filter = null)
+        {
+            var query = _dataContext.Set<TEntity>().AsQueryable();
+
+            if (include != null)
+                query = include(query);
+
+            return filter == null
+                ? query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList()
+                : query.Where(filter).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        }
+
         public TEntity? Get(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
             var query = _dataContext.Set<TEntity>().AsQueryable();

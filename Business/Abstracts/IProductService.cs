@@ -12,7 +12,7 @@ namespace Business.Abstracts
     public interface IProductService
     {
         public DataResult<ICollection<ProductDto>> GetAll();
-        public DataResult<ICollection<ProductDto>> GetAllByCategoryName(string categoryName);
+        public DataResult<PageResult<ProductDto>> GetAllWithProductFilter(ProductFilterDto productFilter, int pageNumber, int pageSize);
         public DataResult<ProductDto> GetById(int id);
         public Result Create(ProductDto productDto, int shopId, int categoryId);
         public Result Update(ProductDto productDto, int productId);
