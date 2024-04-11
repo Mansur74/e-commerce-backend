@@ -11,6 +11,6 @@ namespace Entities.Dtos
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<ProductCategory> Products { get; set; }
+        public ICollection<ProductCategory?> Products { get; set; }
     }
 }

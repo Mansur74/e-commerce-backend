@@ -84,11 +84,13 @@ namespace Business.Concretes
         {
             ICollection<Product> products = _productDal.GetAll(p => p
             .Include(p => p.Shop)
-            .Include(p => p.Reviews)
-            .ThenInclude(pr => pr.User)
             .Include(p => p.Rates)
-            .Include(p => p.Categories)
-            .ThenInclude(c => c.Category));
+            .ThenInclude(pr => pr.User)
+            .Include(p => p.Reviews)
+            .ThenInclude(pr => pr.Rate)
+            .ThenInclude(pr => pr.User));
+   
+
             ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
             return new SuccessDataResult<ICollection<ProductDto>>(result);
         }
@@ -97,11 +99,11 @@ namespace Business.Concretes
         {
             ICollection<Product> products = _productDal.GetAll(p => p
             .Include(p => p.Shop)
-            .Include(p => p.Reviews)
-            .ThenInclude(pr => pr.User)
             .Include(p => p.Rates)
-            .Include(p => p.Categories)
-            .ThenInclude(c => c.Category), p => p.Categories.SingleOrDefault(c => c.Category.Name == categoryName).Category.Name == categoryName);
+            .ThenInclude(pr => pr.User)
+            .Include(p => p.Reviews)
+            .ThenInclude(pr => pr.Rate)
+            .ThenInclude(pr => pr.User));
             ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
             return new SuccessDataResult<ICollection<ProductDto>>(result);
         }
@@ -110,11 +112,11 @@ namespace Business.Concretes
         {
             Product? product = _productDal.Get(p => p.Id == id, p => p
             .Include(p => p.Shop)
-            .Include(p => p.Reviews)
-            .ThenInclude(pr => pr.User)
             .Include(p => p.Rates)
-            .Include(p => p.Categories)
-            .ThenInclude(c => c.Category));
+            .ThenInclude(pr => pr.User)
+            .Include(p => p.Reviews)
+            .ThenInclude(pr => pr.Rate)
+            .ThenInclude(pr => pr.User));
             if (product == null)
                 throw new NotFoundException("Product does not exist");
             ProductDto result = _mapper.Map<ProductDto>(product);

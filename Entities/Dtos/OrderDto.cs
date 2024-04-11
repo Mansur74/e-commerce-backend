@@ -12,9 +12,9 @@ namespace Entities.Dtos
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime OrderDate { get; set; }
-        public User user { get; set; }
-        public Shipment Shipment { get; set; }
-        public Payment Payment { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public UserDto? User { get; set; }
+        public ShipmentDto? Shipment { get; set; }
+        public PaymentDto? Payment { get; set; }
+        public ICollection<OrderItem>? OrderItems { get; set; }
     }
 }

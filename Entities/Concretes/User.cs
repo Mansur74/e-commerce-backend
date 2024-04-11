@@ -17,14 +17,14 @@ namespace Entities.Concretes
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public ICollection<UserRole>? Roles { get; set; }
-        public ICollection<Shop>? Shops { get; set; }
-        public ICollection<Cart>? Carts { get; set; }
-        public ICollection<Order>? Orders { get; set; }
-        public ICollection<Payment>? Payments { get; set; }
-        public ICollection<Wishlist>? Wishlists { get; set; }
-        public ICollection<Shipment>? Shipments { get; set; }
-        public ICollection<ProductReview>? ProductReviews { get; set; }
-        public ICollection<ProductRate>? ProductRates { get; set; }
+        public ICollection<UserRole> Roles { get; set; }
+        public ICollection<Shop> Shops { get; set; }
+        public ICollection<Cart> Carts { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<Payment> Payments { get; set; }
+        public ICollection<Wishlist> Wishlists { get; set; }
+        public ICollection<Shipment> Shipments { get; set; }
+        public ICollection<ProductReview> ProductReviews { get; set; }
+        public ICollection<ProductRate> ProductRates { get; set; }
     }
 }

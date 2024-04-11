@@ -22,7 +22,5 @@ namespace Entities.Dtos
         public string Country { get; set; }
         [Required]
         public string ZipCode { get; set; }
-        public User User { get; set; }
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

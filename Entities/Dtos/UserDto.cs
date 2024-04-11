@@ -34,11 +34,11 @@ namespace Entities.Dtos
         public string Password { get; set; }
 
         public ICollection<Role>? Roles { get; set; }
-        public ICollection<Shop>? Shops { get; set; }
-        public ICollection<Cart>? Carts { get; set; }
-        public ICollection<Order>? Orders { get; set; }
-        public ICollection<Payment>? Payments { get; set; }
-        public ICollection<Wishlist>? Wishlists { get; set; }
+        public ICollection<ShopDto>? Shops { get; set; }
+        public ICollection<CartDto>? Carts { get; set; }
+        public ICollection<OrderDto>? Orders { get; set; }
         public ICollection<Shipment>? Shipments { get; set; }
+        public ICollection<ProductReviewDto>? ProductReviews { get; set; }
+        public ICollection<ProductRateDto>? ProductRates { get; set; }
     }
 }
