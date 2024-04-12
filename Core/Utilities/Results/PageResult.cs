@@ -10,6 +10,7 @@ namespace Core.Utilities.Results
     {
         public int pageNo { get; set; }
         public int pageSize { get; set; }
+        public int totalPages { get; set; }
         public ICollection<T>? rows { get; set; }
     }
 }

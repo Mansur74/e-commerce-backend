@@ -1,4 +1,5 @@
-﻿using Entities.Concretes;
+﻿using Core.Utilities.Results;
+using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -49,16 +50,21 @@ namespace Core.DataAccess
                 : query.Where(filter).ToList();
         }
 
-        public ICollection<TEntity> GetAll(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, Expression<Func<TEntity, bool>>? filter = null)
+        public PageResult<TEntity> GetAll(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, Expression<Func<TEntity, bool>>? filter = null)
         {
+            PageResult<TEntity> pageResult = new PageResult<TEntity> {pageNo = pageNumber, pageSize = pageSize};
             var query = _dataContext.Set<TEntity>().AsQueryable();
 
             if (include != null)
                 query = include(query);
 
-            return filter == null
+            pageResult.rows = filter == null
                 ? query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList()
                 : query.Where(filter).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            pageResult.totalPages = (int) Math.Round((decimal)(query.Count() / pageSize));
+
+            return pageResult;
         }
 
         public TEntity? Get(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)

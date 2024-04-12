@@ -1,4 +1,5 @@
-﻿using Entities.Concretes;
+﻿using Core.Utilities.Results;
+using Entities.Concretes;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Core.DataAccess
     public interface IRepository<T> where T : class, new()
     {
         public ICollection<T> GetAll(Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Expression<Func<T, bool>>? filter = null);
-        public ICollection<T> GetAll(int pageNumber, int pageSize, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Expression<Func<T, bool>>? filter = null);
+        public PageResult<T> GetAll(int pageNumber, int pageSize, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Expression<Func<T, bool>>? filter = null);
         public T? Get(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
         public void Create(T entity);
         public void Update(T entity);

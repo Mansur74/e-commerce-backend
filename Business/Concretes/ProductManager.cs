@@ -8,6 +8,7 @@ using Entities.Concretes;
 using Entities.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -97,16 +98,16 @@ namespace Business.Concretes
 
         public DataResult<PageResult<ProductDto>> GetAllWithProductFilter(ProductFilterDto productFilter, int pageNumber, int pageSize)
         {
-            ICollection<Product> products = _productDal.GetAll(pageNumber, pageSize, p => p
+            PageResult<Product> pageResult = _productDal.GetAll(pageNumber, pageSize, p => p
             .Include(p => p.Shop)
             .Include(p => p.Rates)
             .ThenInclude(pr => pr.User)
             .Include(p => p.Reviews)
             .ThenInclude(pr => pr.Rate)
-            .ThenInclude(pr => pr.User), p => productFilter.colors.Contains(p.Color) && p.Rates.Any(r => productFilter.rates.Contains(r.Rate)));
-            ICollection<ProductDto> result = _mapper.Map<ICollection<ProductDto>>(products);
-            PageResult<ProductDto> pageResult = new PageResult<ProductDto> { pageNo = pageNumber, pageSize = pageSize, rows = result};
-            return new SuccessDataResult<PageResult<ProductDto>>(pageResult);
+            .ThenInclude(pr => pr.User), p => p.Categories.Any(pc => productFilter.categories.Contains(pc.Category.Name)) && productFilter.colors.Contains(p.Color) && p.Rates.Any(r => productFilter.rates.Contains(r.Rate)));
+            ICollection<ProductDto> products = _mapper.Map<ICollection<ProductDto>>(pageResult.rows);
+            PageResult<ProductDto> result = new PageResult<ProductDto> { pageNo = pageResult.pageNo, pageSize = pageResult.pageSize, totalPages = pageResult.totalPages, rows = products};
+            return new SuccessDataResult<PageResult<ProductDto>>(result);
         }
 
         public DataResult<ProductDto> GetById(int id)
