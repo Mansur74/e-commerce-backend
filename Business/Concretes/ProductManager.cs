@@ -98,13 +98,16 @@ namespace Business.Concretes
 
         public DataResult<PageResult<ProductDto>> GetAllWithProductFilter(ProductFilterDto productFilter, int pageNumber, int pageSize)
         {
-            PageResult<Product> pageResult = _productDal.GetAll(pageNumber, pageSize, p => p
-            .Include(p => p.Shop)
-            .Include(p => p.Rates)
-            .ThenInclude(pr => pr.User)
-            .Include(p => p.Reviews)
-            .ThenInclude(pr => pr.Rate)
-            .ThenInclude(pr => pr.User), p => p.Categories.Any(pc => productFilter.categories.Contains(pc.Category.Name)) && productFilter.colors.Contains(p.Color) && p.Rates.Any(r => productFilter.rates.Contains(r.Rate)));
+            PageResult<Product> pageResult = _productDal.GetAll(pageNumber, pageSize, 
+                p => p
+                .Include(p => p.Shop)
+                .Include(p => p.Rates)
+                .ThenInclude(pr => pr.User)
+                .Include(p => p.Reviews)
+                .ThenInclude(pr => pr.Rate)
+                .ThenInclude(pr => pr.User), 
+                p => p.Categories.Any(pc => productFilter.Categories.Contains(pc.Category.Name)) && productFilter.Colors.Contains(p.Color) && productFilter.Rates.Contains((int)p.Rates.Average(r => r.Rate)) && p.Name.ToLower().Contains(productFilter.Search.ToLower()));
+            
             ICollection<ProductDto> products = _mapper.Map<ICollection<ProductDto>>(pageResult.rows);
             PageResult<ProductDto> result = new PageResult<ProductDto> { pageNo = pageResult.pageNo, pageSize = pageResult.pageSize, totalPages = pageResult.totalPages, rows = products};
             return new SuccessDataResult<PageResult<ProductDto>>(result);

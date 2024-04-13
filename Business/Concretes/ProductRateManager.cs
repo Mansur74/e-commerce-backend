@@ -38,10 +38,10 @@ namespace Business.Concretes
             if (product == null)
                 throw new NotFoundException("Product does not exist");
 
-            ProductRate productReview = _mapper.Map<ProductRate>(productRateDto);
-            productReview.User = user;
-            productReview.Product = product;
-            _productRateDal.Create(productReview);
+            ProductRate productRate = _mapper.Map<ProductRate>(productRateDto);
+            productRate.User = user;
+            productRate.Product = product;
+            _productRateDal.Create(productRate);
 
             return new SuccessResult("Product rate was created successfully");
         }

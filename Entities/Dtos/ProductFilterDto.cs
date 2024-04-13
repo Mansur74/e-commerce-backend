@@ -8,8 +8,9 @@ namespace Entities.Dtos
 {
     public class ProductFilterDto
     {
-        public ICollection<string>? categories {  get; set; }
-        public ICollection<string>? colors { get; set; }
-        public ICollection<int>? rates { get; set; }
+        public ICollection<string>? Categories {  get; set; }
+        public ICollection<string>? Colors { get; set; }
+        public ICollection<int>? Rates { get; set; }
+        public string? Search {  get; set; }
     }
 }
