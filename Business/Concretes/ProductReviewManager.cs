@@ -47,9 +47,9 @@ namespace Business.Concretes
             return new SuccessResult("Product review was created successfully");
         }
 
-        public Result Delete(int reviewId)
+        public Result Delete(int Id)
         {
-            ProductReview? productReview = _productReviewDal.Get(pr => pr.Id == reviewId);
+            ProductReview? productReview = _productReviewDal.Get(pr => pr.Id == Id);
             if (productReview == null)
                 throw new NotFoundException("Product review does not exist");
             _productReviewDal.Delete(productReview);

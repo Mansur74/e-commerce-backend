@@ -27,6 +27,9 @@ namespace Core.DataAccess
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<ProductRate> ProductRates { get; set; }
+        public DbSet<ShopRate> ShopReviews { get; set; }
+        public DbSet<ShopReview> ShopRates { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -108,11 +111,6 @@ namespace Core.DataAccess
                 .WithMany(p => p.Rates)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<ProductRate>()
-               .HasOne(pr => pr.Product)
-               .WithMany(p => p.Rates)
-               .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<ProductReview>()
                .HasOne(pr => pr.User)
                .WithMany(u => u.ProductReviews)
@@ -120,6 +118,35 @@ namespace Core.DataAccess
 
             modelBuilder.Entity<ProductReview>()
                .HasOne(pr => pr.Rate)
+               .WithMany(u => u.Reviews)
+               .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<ShopRate>()
+                .HasKey(sr => new { sr.UserId, sr.ShopId });
+
+            modelBuilder.Entity<ShopRate>()
+                .HasOne(sr => sr.User)
+                .WithMany(u => u.ShopRates)
+                .HasForeignKey(sr => sr.UserId);
+
+            modelBuilder.Entity<ShopRate>()
+                .HasOne(sr => sr.Shop)
+                .WithMany(s => s.Rates)
+                .HasForeignKey(sr => sr.ShopId);
+
+            modelBuilder.Entity<ShopRate>()
+                .HasOne(sr => sr.Shop)
+                .WithMany(s => s.Rates)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ShopReview>()
+               .HasOne(sr => sr.User)
+               .WithMany(u => u.ShopReviews)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ShopReview>()
+               .HasOne(sr => sr.Rate)
                .WithMany(u => u.Reviews)
                .OnDelete(DeleteBehavior.Restrict);
 

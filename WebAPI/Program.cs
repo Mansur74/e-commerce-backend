@@ -22,6 +22,8 @@ builder.Services.AddScoped<IProductCategoryDal, ProductCategoryDal>();
 builder.Services.AddScoped<ICategoryDal, CategoryDal>();
 builder.Services.AddScoped<IProductRateDal, ProductRateDal>();
 builder.Services.AddScoped<IProductReviewDal, ProductReviewDal>();
+builder.Services.AddScoped<IShopRateDal, ShopRateDal>();
+builder.Services.AddScoped<IShopReviewDal, ShopReviewDal>();
 builder.Services.AddScoped<ICartDal, CartDal>();
 
 //services
@@ -33,6 +35,8 @@ builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 builder.Services.AddScoped<IProductRateService, ProductRateManager>();
 builder.Services.AddScoped<IProductReviewService, ProductReviewManager>();
+builder.Services.AddScoped<IShopRateService, ShopRateManager>();
+builder.Services.AddScoped<IShopReviewService, ShopReviewManager>();
 builder.Services.AddScoped<ICartService, CartManager>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>

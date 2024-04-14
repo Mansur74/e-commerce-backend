@@ -32,6 +32,10 @@ namespace Core.Utilities.Mappers
             CreateMap<ProductReview, ProductReviewDto>();
             CreateMap<ProductRateDto, ProductRate>();
             CreateMap<ProductRate, ProductRateDto>();
+            CreateMap<ShopReviewDto, ShopReview>();
+            CreateMap<ShopReview, ShopReviewDto>();
+            CreateMap<ShopRateDto, ShopRate>();
+            CreateMap<ShopRate, ShopRateDto>();
             CreateMap<CartDto, Cart>();
             CreateMap<Cart, CartDto>();
             

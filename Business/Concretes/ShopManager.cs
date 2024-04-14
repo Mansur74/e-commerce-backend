@@ -57,7 +57,13 @@ namespace Business.Concretes
 
         public DataResult<ShopDto> GetById(int shopId)
         {
-            Shop? shop = _shopDal.Get(s => s.Id == shopId, s => s.Include(s => s.User).Include(s => s.Products));
+            Shop? shop = _shopDal.Get(s => s.Id == shopId, 
+                s => s
+                .Include(s => s.User)
+                .Include(s => s.Products)
+                .ThenInclude(p => p.Rates)
+                .Include(s => s.Rates)
+                .Include(s=> s.Reviews));
             if (shop == null)
                 throw new NotFoundException("Shop was already deleted");
 

@@ -40,5 +40,7 @@ namespace Entities.Dtos
         public ICollection<Shipment>? Shipments { get; set; }
         public ICollection<ProductReviewDto>? ProductReviews { get; set; }
         public ICollection<ProductRateDto>? ProductRates { get; set; }
+        public ICollection<ShopReviewDto>? ShopReviews { get; set; }
+        public ICollection<ShopRateDto>? ShopRates { get; set; }
     }
 }

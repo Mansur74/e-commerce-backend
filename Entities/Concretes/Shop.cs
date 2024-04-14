@@ -17,5 +17,7 @@ namespace Entities.Concretes
         public DateTime FoundedAt { get; set; }
         public User User { get; set; }
         public ICollection<Product> Products { get; set; }
+        public ICollection<ShopReview> Reviews { get; set; }
+        public ICollection<ShopRate> Rates { get; set; }
     }
 }

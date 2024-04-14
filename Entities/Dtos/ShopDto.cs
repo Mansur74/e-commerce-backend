@@ -18,7 +18,9 @@ namespace Entities.Dtos
         [Required(ErrorMessage = "Founded date and time can not be empty.")]
         public DateTime FoundedAt { get; set; }
         public UserDto? User { get; set; }
-        public List<ProductDto>? Products { get; set; }
+        public ICollection<ProductDto>? Products { get; set; }
+        public ICollection<ShopReviewDto>? Reviews { get; set; }
+        public ICollection<ShopRateDto>? Rates { get; set; }
 
     }
 }
