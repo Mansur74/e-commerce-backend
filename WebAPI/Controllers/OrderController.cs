@@ -1,11 +1,13 @@
 ﻿using Business.Abstracts;
 using Core.Utilities.Results;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class OrderController : ControllerBase

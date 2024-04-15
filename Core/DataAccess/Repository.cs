@@ -62,7 +62,9 @@ namespace Core.DataAccess
                 ? query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList()
                 : query.Where(filter).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-            pageResult.totalPages = (int) Math.Round((decimal)(query.Where(filter).Count() / pageSize));
+            pageResult.totalPages = filter == null
+                ? (int)Math.Round((decimal)(query.Count() / pageSize))
+                : (int)Math.Round((decimal)(query.Where(filter).Count() / pageSize));
 
             return pageResult;
         }

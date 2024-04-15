@@ -4,11 +4,12 @@ using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
-  
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class ShopController : ControllerBase
@@ -22,7 +23,14 @@ namespace WebAPI.Controllers
         [HttpGet("shop")]
         public IActionResult GetAllShops()
         {
-            DataResult<ICollection<ShopDto>> shops = _shopService.GelAll();
+            DataResult<ICollection<ShopDto>> shops = _shopService.GetAll();
+            return Ok(shops);
+        }
+
+        [HttpGet("shops")]
+        public IActionResult GetPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+        {
+            DataResult<PageResult<ShopDto>> shops = _shopService.GetPage(pageNumber, pageSize);
             return Ok(shops);
         }
 

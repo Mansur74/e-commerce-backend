@@ -9,7 +9,8 @@ using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
-  
+
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class ProductController : ControllerBase

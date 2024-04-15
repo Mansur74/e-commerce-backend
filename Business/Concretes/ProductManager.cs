@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
 using Core.Exceptions;
+using Core.Utilities;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
@@ -58,8 +59,9 @@ namespace Business.Concretes
 
         public Result Update(ProductDto productDto, int productId)
         {
+            string email = SecurityUtil.getUserEmail();
             Product? product = _productDal.Get(p => p.Id == productId);
-            if (product == null)
+            if (product == null || product.Shop.User.Email != email)
                 throw new NotFoundException("Product does not exist");
 
             product.Id = productDto.Id;
@@ -73,8 +75,9 @@ namespace Business.Concretes
 
         public Result Delete(int id)
         {
+            string email = SecurityUtil.getUserEmail();
             Product?  product = _productDal.Get(p => p.Id == id);
-            if (product == null)
+            if (product == null || product.Shop.User.Email != email)
                 throw new NotFoundException("Product was already deleted");
 
             _productDal.Delete(product);
@@ -117,6 +120,7 @@ namespace Business.Concretes
         {
             Product? product = _productDal.Get(p => p.Id == id, p => p
             .Include(p => p.Shop)
+            .ThenInclude(pr => pr.User)
             .Include(p => p.Rates)
             .ThenInclude(pr => pr.User)
             .Include(p => p.Reviews)

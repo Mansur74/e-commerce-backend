@@ -11,7 +11,8 @@ namespace Business.Abstracts
 {
     public interface IShopService
     {
-        public DataResult<ICollection<ShopDto>> GelAll();
+        public DataResult<ICollection<ShopDto>> GetAll();
+        public DataResult<PageResult<ShopDto>> GetPage(int pageNumber, int pageSize);
         public DataResult<ShopDto> GetById(int shopId);
         public Result Create(ShopDto shopDto, int userId);
         public Result Update(ShopDto shopDto, int shopId);

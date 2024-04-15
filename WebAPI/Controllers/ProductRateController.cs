@@ -2,11 +2,13 @@
 using Core.Utilities.Results;
 using DataAccess.Concretes;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class ProductRateController : ControllerBase

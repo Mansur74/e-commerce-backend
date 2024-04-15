@@ -1,13 +1,15 @@
 ﻿using Business.Abstracts;
 using Core.Utilities.Results;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/category")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
