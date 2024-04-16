@@ -5,4 +5,4 @@
 -> JWT Authorization </br>
 -> SOLID </br>
 -> Multitier Architecture </br>
--> XUnit tests with FakeItEasy </br>
+-> XUnit tests with Moq </br>
