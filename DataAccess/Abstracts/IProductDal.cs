@@ -11,7 +11,6 @@ namespace DataAccess.Abstracts
 {
     public interface IProductDal : IRepository<Product>
     {
-        public ICollection<Product> GetAllIncludes();
-        public Product? GetIncludes(Expression<Func<Product, bool>>? filter = null);
+
     }
 }

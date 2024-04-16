@@ -69,7 +69,7 @@ namespace Business.Concretes
             product.Price = productDto.Price;
             product.SKU = productDto.SKU;
             product.Stock = productDto.Stock;
-            _productDal.Create(product);
+            _productDal.Update(product);
             return new SuccessResult("Product was updated successfully");
         }
 

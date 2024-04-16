@@ -19,24 +19,6 @@ namespace DataAccess.Concretes
             _dbContext = dbContext;
         }
 
-        public ICollection<Product> GetAllIncludes()
-        {
-            return _dbContext.Products
-                .Include(p => p.Carts)
-                .Include(p => p.Wishlists)
-                .Include(p => p.OrderItems)
-                .Include(p => p.Categories).ThenInclude(pc => pc.Category)
-                .ToList();
-        }
-
-        public Product? GetIncludes(Expression<Func<Product, bool>>? filter = null)
-        {
-            return _dbContext.Products.Where(filter)
-                .Include(p => p.Carts)
-                .Include(p => p.Wishlists)
-                .Include(p => p.OrderItems)
-                .Include(p => p.Categories).ThenInclude(pc => pc.Category)
-                .FirstOrDefault();
-        }
+      
     }
 }
